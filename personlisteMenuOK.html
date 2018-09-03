@@ -9,6 +9,11 @@
 			background-color: rgb(240, 240, 240);
 		}
 
+		header {
+			text-align: center;
+			margin: 0 0 2rem;
+		}
+
 		article {
 			padding: 1em;
 			background-color: white;
@@ -36,6 +41,7 @@
 
 <body>
 	<header>
+		<h1></h1>
 		<nav>
 			<button class="menu-item" data-civilstatus="alle">Alle personer</button>
 			<button class="menu-item" data-civilstatus="single">Singler</button>
@@ -84,7 +90,7 @@
 
 		function visPersoner() {
 			let temp = document.querySelector(".data-template");
-
+			document.querySelector("header h1").textContent = civilFilter;
 
 			//løb personlisten igennem og lav en klon
 			personer.forEach(person => {
