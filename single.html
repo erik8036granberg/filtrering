@@ -32,7 +32,9 @@
 			text-transform: uppercase;
 		}
 
-
+		.tilbage {
+			margin: 0 auto;
+		}
 
 		@media screen and (min-width:580px) {
 			.data-container {
@@ -46,6 +48,7 @@
 </head>
 
 <body>
+	<button class="tilbage">tilbage</button>
 	<!--
 	<header>
 		<h1></h1>
@@ -69,6 +72,7 @@
 		//		hent og gem variabel fra URL
 		let urlParams = new URLSearchParams(window.location.search);
 		let github = urlParams.get("github");
+		let tilbagesortering = urlParams.get("tilbagesortering");
 		console.log(github);
 
 		//		globale værdier - civilFilter til alle som standard
@@ -115,6 +119,12 @@
 					dest.querySelector(".data-civilstatus").textContent = person.civilstatus;
 				}
 			})
+		}
+
+		document.querySelector(".tilbage").addEventListener("click", gaaTilbage);
+
+		function gaaTilbage() {
+			window.location.href = "link_til_single.html?tilbagesortering=" + tilbagesortering;
 		}
 	</script>
 </body>

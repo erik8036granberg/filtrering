@@ -42,6 +42,7 @@
 				grid-template-columns: repeat(3, 1fr);
 			}
 		}
+
 	</style>
 </head>
 
@@ -68,6 +69,12 @@
 
 	<script>
 		//		globale værdier - civilFilter til alle som standard
+
+		//		hent og gem variabel fra URL
+		let urlParams = new URLSearchParams(window.location.search);
+		let tilbagesortering = urlParams.get("tilbagesortering");
+
+
 		let personer;
 		let dest = document.querySelector(".data-container");
 		let civilFilter = "alle";
@@ -86,13 +93,20 @@
 			knap.addEventListener("click", filtrering)
 		});
 
+
+		if (tilbagesortering != "") {
+			dest.textContent = "";
+			civilFilter = tilbagesortering;
+			visPersoner();
+		};
+
 		//		filtrering function
 
 		function filtrering() {
 			dest.textContent = "";
 			civilFilter = this.getAttribute("data-civilstatus");
 			visPersoner();
-		}
+		};
 
 
 		function visPersoner() {
@@ -106,17 +120,18 @@
 					let klon = temp.cloneNode(true).content;
 					//indsæt data i klonen
 					klon.querySelector("h2").textContent = person.navn;
+					klon.querySelector(".data-github").textContent = person.github;
 					klon.querySelector("img").src = person.billede;
 					klon.querySelector("img").addEventListener("click", () => {
-						window.location.href = "single.html?github=" + person.github;
+						window.location.href = "single.html?github=" + person.github + "&tilbagesortering=" + civilFilter;
 					});
 					klon.querySelector(".data-civilstatus").textContent = person.civilstatus;
-					klon.querySelector(".data-github").textContent = person.github;
 					//placer klon i DOM
 					dest.appendChild(klon);
 				}
 			})
 		}
+
 	</script>
 </body>
 
