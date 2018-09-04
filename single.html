@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Hent JSON</title>
+	<style>
+		body {
+			background-color: rgb(240, 240, 240);
+		}
+
+		header {
+			text-align: center;
+			margin: 0 0 2rem;
+		}
+
+		article {
+			padding: 1em;
+			background-color: white;
+		}
+
+		.data-container article img {
+			width: 100%;
+		}
+
+		.data-container {
+			margin: 0 auto;
+			display: grid;
+		}
+
+		header h1:first-letter {
+			text-transform: uppercase;
+		}
+
+
+
+		@media screen and (min-width:580px) {
+			.data-container {
+				padding-left: 10%;
+				padding-right: 10%;
+				grid-gap: 5px;
+				grid-template-columns: repeat(1, 1fr);
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<!--
+	<header>
+		<h1></h1>
+		<nav>
+			<button class="menu-item" data-civilstatus="alle">Alle personer</button>
+			<button class="menu-item" data-civilstatus="single">Singler</button>
+			<button class="menu-item" data-civilstatus="optaget">I forhold</button>
+		</nav>
+	</header>
+-->
+	<main class="container">
+		<section class="data-container">
+			<article class="person">
+				<h2></h2>
+				<img src="" alt=""><br> status: <span class="data-civilstatus" </span><br>
+				<span class="data-github"></span>
+			</article>
+		</section>
+	</main>
+	<script>
+		//		hent og gem variabel fra URL
+		let urlParams = new URLSearchParams(window.location.search);
+		let github = urlParams.get("github");
+		console.log(github);
+
+		//		globale værdier - civilFilter til alle som standard
+		let personer;
+		let dest = document.querySelector(".data-container");
+		let civilFilter = "alle";
+
+		document.addEventListener("DOMContentLoaded", hentJson);
+
+		async function hentJson() {
+			let myJson = await fetch("personliste.json");
+			personer = await myJson.json();
+			visPerson();
+		}
+
+		//		eventlistner for knapper, som sætter civilFilter til dey valgte
+		document.querySelectorAll(".menu-item").forEach(knap => {
+
+			knap.addEventListener("click", filtrering)
+		});
+
+		//		filtrering function
+
+		function filtrering() {
+			dest.textContent = "";
+			civilFilter = this.getAttribute("data-civilstatus");
+			visPersoner();
+		}
+
+
+		function visPerson() {
+
+			//Loop
+			personer.forEach(person => {
+				let dest = document.querySelector(".data-container");
+
+				//hvis github navn matcher, så udskriv:
+				if (person.github == github) {
+
+					//indsæt data i klonen
+					dest.querySelector("h2").textContent = person.navn;
+					dest.querySelector(".data-github").textContent = person.github;
+					dest.querySelector("img").src = person.billede;
+					dest.querySelector(".data-civilstatus").textContent = person.civilstatus;
+				}
+			})
+		}
+	</script>
+</body>
+
+</html>
